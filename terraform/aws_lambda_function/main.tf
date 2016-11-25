@@ -1,4 +1,4 @@
-resource "aws_lambda_function" "dd_diffbot" {
+resource "aws_lambda_function" "emitter" {
     function_name = "${var.function_name}"
     description = "${var.function_description}"
 
@@ -19,27 +19,28 @@ resource "aws_lambda_function" "dd_diffbot" {
     kms_key_arn = "${var.function_key_arn}"
 }
 
-resource "aws_lambda_permission" "dd_diffbot" {
+resource "aws_lambda_permission" "emitter" {
     statement_id = "AllowExecutionFromCloudWatch"
     action = "lambda:InvokeFunction"
-    function_name = "${aws_lambda_function.dd_diffbot.arn}"
+    function_name = "${aws_lambda_function.emitter.arn}"
     principal = "events.amazonaws.com"
     source_arn = "${aws_cloudwatch_event_rule.scheduler.arn}"
 }
 
+resource "aws_cloudwatch_log_group" "emitter" {
+    name = "/aws/lambda/${aws_lambda_function.emitter.function_name}"
+    retention_in_days = 14
+}
+
 resource "aws_cloudwatch_event_rule" "scheduler" {
-    name = "${aws_lambda_function.dd_diffbot.function_name}-scheduler"
-    description = "${aws_lambda_function.dd_diffbot.description}"
+    name = "${aws_lambda_function.emitter.function_name}-scheduler"
+    description = "${aws_lambda_function.emitter.description}"
     schedule_expression = "rate(10 minutes)"
 }
 
-resource "aws_cloudwatch_event_target" "lambda" {
+resource "aws_cloudwatch_event_target" "emitter" {
     rule = "${aws_cloudwatch_event_rule.scheduler.name}"
     target_id = "InvokeLambda"
-    arn = "${aws_lambda_function.dd_diffbot.arn}"
+    arn = "${aws_lambda_function.emitter.arn}"
 }
 
-resource "aws_cloudwatch_log_group" "lambda" {
-    name = "/aws/lambda/${aws_lambda_function.dd_diffbot.function_name}"
-    retention_in_days = 14
-}
