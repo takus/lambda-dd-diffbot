@@ -2,6 +2,10 @@
 
 AWS Lambda function to emit [Diffbot](https://www.diffbot.com/) metrics to [Datadog](https://app.datadoghq.com/).
 
+## Requirement
+
+- Terraform (>=v0.7.12)
+
 ## Usage
 
 ```
