@@ -1,22 +1,22 @@
 resource "aws_lambda_function" "dd_diffbot" {
     function_name = "${var.function_name}"
-	description = "${var.function_description}"
+    description = "${var.function_description}"
 
     filename = "../../lambda_function.zip"
     source_code_hash = "${base64sha256(file("../../lambda_function.zip"))}"
-	runtime = "python2.7"
+    runtime = "python2.7"
     handler = "lambda_function.lambda_handler"
-	timeout = 30
+    timeout = 30
 
-	environment {
-		variables = {
-			DATADOG_API_KEY = "${var.datadog_api_key}"
-			DIFFBOT_TOKEN = "${var.diffbot_token}"
-		}
-	}
+    environment {
+        variables = {
+            DATADOG_API_KEY = "${var.datadog_api_key}"
+            DIFFBOT_TOKEN = "${var.diffbot_token}"
+        }
+    }
 
     role = "${var.function_role_arn}"
-	kms_key_arn = "${var.function_key_arn}"
+    kms_key_arn = "${var.function_key_arn}"
 }
 
 resource "aws_cloudwatch_event_rule" "scheduler" {
