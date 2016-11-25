@@ -45,6 +45,12 @@ class Stats(object):
 stats = Stats()
 
 def lambda_handler(event, context):
+    tags = []
+    if 'AWS_REGION' in os.environ:
+        tags.append('region:%s' % os.environ['AWS_REGION'])
+    if 'AWS_LAMBDA_FUNCTION_NAME' in os.environ:
+        tags.append('functionname:%s' % os.environ['AWS_LAMBDA_FUNCTION_NAME'])
+
     today = datetime.date.today()
     first_date_of_this_month = datetime.date(day=1, month=today.month, year=today.year)
 
@@ -61,9 +67,9 @@ def lambda_handler(event, context):
         monthly_calls += c['calls']
         monthly_proxy_calls += c['proxyCalls']
 
-    stats.gauge("diffbot.monthlyCalls", monthly_calls)
-    stats.gauge("diffbot.monthlyProxyCalls", monthly_proxy_calls)
-    stats.gauge("diffbot.monthlyPlanCalls", m['planCalls'])
+    stats.gauge("diffbot.monthlyCalls", monthly_calls, tags=tags)
+    stats.gauge("diffbot.monthlyProxyCalls", monthly_proxy_calls, tags=tags)
+    stats.gauge("diffbot.monthlyPlanCalls", m['planCalls'], tags=tags)
 
     stats.flush()
     return {'Status': 'OK'}
