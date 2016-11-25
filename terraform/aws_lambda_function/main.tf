@@ -38,7 +38,7 @@ resource "aws_cloudwatch_event_rule" "scheduler" {
     schedule_expression = "rate(10 minutes)"
 }
 
-resource "aws_cloudwatch_event_target" "emitter" {
+resource "aws_cloudwatch_event_target" "scheduler" {
     rule = "${aws_cloudwatch_event_rule.scheduler.name}"
     target_id = "InvokeLambda"
     arn = "${aws_lambda_function.emitter.arn}"
