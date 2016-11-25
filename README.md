@@ -13,7 +13,7 @@ cd lambda-dd-diffbot
 cp .envrc.template .envrc
 vi .envrc
 
-# create aws lambda function
+# create aws lambda function & cloudwatch event rule
 zip lambda_function.zip lambda_function.py
 cd terraform/aws_lambda_function
 terraform plan
