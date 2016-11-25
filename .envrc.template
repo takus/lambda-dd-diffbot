@@ -1,0 +1,11 @@
+export DATADOG_API_KEY=""
+export TF_VAR_datadog_api_key=$DATADOG_API_KEY
+
+export DATADOG_APP_KEY=""
+export TF_VAR_datadog_app_key=$DATADOG_APP_KEY
+
+export DIFFBOT_TOKEN=""
+export TF_VAR_diffbot_token=$DIFFBOT_TOKEN
+
+export TF_VAR_function_role_arn=""
+export TF_VAR_function_key_arn=""

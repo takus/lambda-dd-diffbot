@@ -7,8 +7,8 @@ import time
 import datetime
 
 instance = {
-    'dd_api_endpoint': "https://app.datadoghq.com/api/v1/series",
-    'dd_api_key': os.environ.get('DD_API_KEY', 'dummy'),
+    'datadog_api_endpoint': "https://app.datadoghq.com/api/v1/series",
+    'datadog_api_key': os.environ.get('DATADOG_API_KEY', 'dummy'),
     'diffbot_api_endpoint': "http://api.diffbot.com/v3/account",
     'diffbot_token': os.environ.get('DIFFBOT_TOKEN', 'dummy'),
 }
@@ -36,7 +36,7 @@ class Stats(object):
         self.series = []
 
         req = urllib2.Request(
-                '%s?api_key=%s' % (instance['dd_api_endpoint'], instance['dd_api_key']),
+                '%s?api_key=%s' % (instance['datadog_api_endpoint'], instance['datadog_api_key']),
                 json.dumps(metrics_dict),
                 {'Content-Type': 'application/json'})
         res = urllib2.urlopen(req)
