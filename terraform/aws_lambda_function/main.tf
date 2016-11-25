@@ -2,8 +2,8 @@ resource "aws_lambda_function" "emitter" {
     function_name = "${var.function_name}"
     description = "${var.function_description}"
 
-    filename = "../../lambda_function.zip"
-    source_code_hash = "${base64sha256(file("../../lambda_function.zip"))}"
+    filename = "${path.root}/build/lambda-dd-diffbot.zip"
+    source_code_hash = "${base64sha256(file("${path.root}/build/lambda-dd-diffbot.zip"))}"
     runtime = "python2.7"
     handler = "lambda_function.lambda_handler"
     timeout = 30
